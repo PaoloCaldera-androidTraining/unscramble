@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.android.unscramble.R
 import com.example.android.unscramble.databinding.GameFragmentBinding
 
@@ -28,6 +29,13 @@ import com.example.android.unscramble.databinding.GameFragmentBinding
  * Fragment where the game is played, contains the game logic.
  */
 class GameFragment : Fragment() {
+
+    /*  Kotlin property DELEGATION: the responsibility of instantiating and returning the
+        referenced object is given to the viewModels() class.
+        By doing this, the viewModel variable is automatically retained when the device or
+        emulator experiences a configuration change
+     */
+    private val viewModel: GameViewModel by viewModels()
 
     private var score = 0
     private var currentWordCount = 0
