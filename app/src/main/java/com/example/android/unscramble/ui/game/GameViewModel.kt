@@ -34,4 +34,42 @@ class GameViewModel : ViewModel() {
     private var _currentScrambledWord: String = "test"
     val currentScrambledWord: String get() = _currentScrambledWord
 
+
+    // Internal property of the ViewModel class
+    private lateinit var currentWord: String
+    private var wordsList: MutableList<String> = mutableListOf()
+
+
+    fun nextScrambledWord() {
+        currentWord = allWordsList.random()
+
+        var tempScrambledWord = currentWord.toCharArray()
+        do {
+            tempScrambledWord.shuffle()
+        } while (tempScrambledWord.toString().equals(currentWord, false))
+
+        _currentScrambledWord = tempScrambledWord.toString()
+    }
+
+    fun isCurrentWordAvailable(): Boolean {
+        if (wordsList.contains(currentWord)) {
+            // The random word has already been used
+            return false
+        }
+
+        wordsList.add(currentWord)
+        return true
+    }
+
+    fun updateWordsCount() {
+        _currentWordCount++
+    }
+
+    fun updateScore() {
+        _score += SCORE_INCREASE
+    }
+
+    private fun evaluateInputWord(input: String): Boolean {
+        return currentWord.equals(input, false)
+    }
 }

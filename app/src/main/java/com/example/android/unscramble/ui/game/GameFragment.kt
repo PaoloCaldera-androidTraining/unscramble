@@ -38,13 +38,9 @@ class GameFragment : Fragment() {
     private val viewModel: GameViewModel by viewModels()
 
 
-
     // Binding object instance with access to the views in the game_fragment.xml layout
     private lateinit var binding: GameFragmentBinding
 
-    // Create a ViewModel the first time the fragment is created.
-    // If the fragment is re-created, it receives the same GameViewModel instance created by the
-    // first fragment
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
