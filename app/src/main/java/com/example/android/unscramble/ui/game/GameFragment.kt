@@ -37,9 +37,6 @@ class GameFragment : Fragment() {
      */
     private val viewModel: GameViewModel by viewModels()
 
-    private var score = 0
-    private var currentWordCount = 0
-    private var currentScrambledWord = "test"
 
 
     // Binding object instance with access to the views in the game_fragment.xml layout
@@ -74,7 +71,6 @@ class GameFragment : Fragment() {
     /*
     * Checks the user's word, and updates the score accordingly.
     * Displays the next scrambled word.
-    */
     private fun onSubmitWord() {
         currentScrambledWord = getNextScrambledWord()
         currentWordCount++
@@ -84,11 +80,12 @@ class GameFragment : Fragment() {
         setErrorTextField(false)
         updateNextWordOnScreen()
     }
+    */
+
 
     /*
      * Skips the current word without changing the score.
      * Increases the word count.
-     */
     private fun onSkipWord() {
         currentScrambledWord = getNextScrambledWord()
         currentWordCount++
@@ -96,6 +93,7 @@ class GameFragment : Fragment() {
         setErrorTextField(false)
         updateNextWordOnScreen()
     }
+    */
 
     /*
      * Gets a random word for the list of words and shuffles the letters in it.
@@ -139,6 +137,6 @@ class GameFragment : Fragment() {
      * Displays the next scrambled word on screen.
      */
     private fun updateNextWordOnScreen() {
-        binding.textViewUnscrambledWord.text = currentScrambledWord
+        binding.textViewUnscrambledWord.text = viewModel.currentScrambledWord
     }
 }
