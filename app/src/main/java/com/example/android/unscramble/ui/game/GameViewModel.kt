@@ -63,7 +63,7 @@ class GameViewModel : ViewModel() {
 
     // Increase the word count and go to the next word
     fun nextWord() {
-        _currentWordCount.value++
+        (_currentWordCount.value)?.inc()
         generateScrambledWord()
     }
 
@@ -91,7 +91,7 @@ class GameViewModel : ViewModel() {
     // Evaluate if the input word is equal to the current word. If so, increase the score
     fun evaluateInputWord(input: String): Boolean {
         val result = currentWord.equals(input, false)
-        if (result) { _score.value += SCORE_INCREASE }
+        if (result) { (_score.value)?.plus(SCORE_INCREASE) }
 
         return result
     }

@@ -76,7 +76,7 @@ class GameFragment : Fragment() {
             return
         }
 
-        if (viewModel.currentWordCount.value >= MAX_NO_OF_WORDS) {
+        if (viewModel.currentWordCount.value!! >= MAX_NO_OF_WORDS) {
             showFinalScoreDialog()
             return
         }
@@ -89,7 +89,7 @@ class GameFragment : Fragment() {
 
     // Skip button: go to the next word without increasing the score
     private fun onSkipWord() {
-        if (viewModel.currentWordCount.value >= MAX_NO_OF_WORDS) {
+        if (viewModel.currentWordCount.value!! >= MAX_NO_OF_WORDS) {
             showFinalScoreDialog()
             return
         }
