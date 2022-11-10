@@ -1,17 +1,28 @@
 package com.example.android.unscramble.ui.game
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-/*  ViewModel is a particular class that is responsible for holding and processing data needed
+/*  VIEW MODEL
+    ViewModel is a particular class that is responsible for holding and processing data needed
     by the UI components (activities and fragments).
     ViewModel objects are automatically retained when the device or emulator experiences a
     configuration change, and therefore are unaffected by the UI components lifecycle.
- */
 
-/*  ViewModel must contain only references to the data needed for the UI, and not references
+    ViewModel must contain only references to the data needed for the UI, and not references
     of the UI components (activities and fragments).
 */
+
+/*  LIVE DATA
+    LiveData is an observable data holder that is lifecycle-aware.
+    - it acts as a wrapper, holding a data of any type
+    - it is observable: when the contained data changes, a method is notified by such modification
+    - it is lifecycle-aware: the Live Data observer is associated to a LifecycleOwner, meaning
+        that its behaviour depends on the lifecycle state. Observers are indeed notified only
+        when their lifecycle state is STARTED or RESUMED.
+ */
 
 class GameViewModel : ViewModel() {
 
@@ -26,14 +37,15 @@ class GameViewModel : ViewModel() {
         class must be the only class where the data prepared for the UI has to be managed
      */
 
-    private var _score: Int = 0
-    val score: Int get() = _score
+    // Observable LiveData variables
+    private val _score = MutableLiveData<Int>(0)
+    val score: LiveData<Int> get() = _score
 
-    private var _currentWordCount: Int = 0
-    val currentWordCount: Int get() = _currentWordCount
+    private val _currentWordCount = MutableLiveData<Int>(0)
+    val currentWordCount: LiveData<Int> get() = _currentWordCount
 
-    private lateinit var _currentScrambledWord: String
-    val currentScrambledWord: String get() = _currentScrambledWord
+    private val _currentScrambledWord = MutableLiveData<String>()
+    val currentScrambledWord: LiveData<String> get() = _currentScrambledWord
 
 
     // Internal property of the ViewModel class
@@ -51,7 +63,7 @@ class GameViewModel : ViewModel() {
 
     // Increase the word count and go to the next word
     fun nextWord() {
-        _currentWordCount++
+        _currentWordCount.value++
         generateScrambledWord()
     }
 
@@ -73,21 +85,21 @@ class GameViewModel : ViewModel() {
         } while (String(tempScrambledWord).equals(currentWord, false))
 
         // Assign the shuffled word to the current scrambled word to display
-        _currentScrambledWord = String(tempScrambledWord)
+        _currentScrambledWord.value = String(tempScrambledWord)
     }
 
     // Evaluate if the input word is equal to the current word. If so, increase the score
     fun evaluateInputWord(input: String): Boolean {
         val result = currentWord.equals(input, false)
-        if (result) { _score += SCORE_INCREASE }
+        if (result) { _score.value += SCORE_INCREASE }
 
         return result
     }
 
     // Re-initialize all the backing properties of the viewModel object
     fun reinitializeData() {
-        _score = 0
-        _currentWordCount = 0
+        _score.value = 0
+        _currentWordCount.value = 0
         wordsList.clear()
         nextWord()
     }

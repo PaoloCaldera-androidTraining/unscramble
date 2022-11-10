@@ -76,7 +76,7 @@ class GameFragment : Fragment() {
             return
         }
 
-        if (viewModel.currentWordCount >= MAX_NO_OF_WORDS) {
+        if (viewModel.currentWordCount.value >= MAX_NO_OF_WORDS) {
             showFinalScoreDialog()
             return
         }
@@ -89,7 +89,7 @@ class GameFragment : Fragment() {
 
     // Skip button: go to the next word without increasing the score
     private fun onSkipWord() {
-        if (viewModel.currentWordCount >= MAX_NO_OF_WORDS) {
+        if (viewModel.currentWordCount.value >= MAX_NO_OF_WORDS) {
             showFinalScoreDialog()
             return
         }
@@ -127,16 +127,16 @@ class GameFragment : Fragment() {
     // Updates the screen when the game goes to the next scrambled word
     private fun updateScreen() {
         binding.wordCount.text = getString(
-            R.string.word_count, viewModel.currentWordCount, MAX_NO_OF_WORDS)
-        binding.score.text = getString(R.string.score, viewModel.score)
-        binding.textViewUnscrambledWord.text = viewModel.currentScrambledWord
+            R.string.word_count, viewModel.currentWordCount.value, MAX_NO_OF_WORDS)
+        binding.score.text = getString(R.string.score, viewModel.score.value)
+        binding.textViewUnscrambledWord.text = viewModel.currentScrambledWord.value
     }
 
     // Creates and displays an alert dialog with the final score
     private fun showFinalScoreDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.congratulations))
-            .setMessage(getString(R.string.you_scored, viewModel.score))
+            .setMessage(getString(R.string.you_scored, viewModel.score.value))
             .setNegativeButton(getString(R.string.exit)) {_, _ -> exitGame()}
             .setPositiveButton(getString(R.string.play_again)) {_, _ -> restartGame()}
             .setCancelable(false)
