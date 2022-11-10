@@ -1,5 +1,6 @@
 package com.example.android.unscramble.ui.game
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 
 /*  ViewModel is a particular class that is responsible for holding and processing data needed
@@ -31,7 +32,7 @@ class GameViewModel : ViewModel() {
     private var _currentWordCount: Int = 0
     val currentWordCount: Int get() = _currentWordCount
 
-    private var _currentScrambledWord: String = "test"
+    private lateinit var _currentScrambledWord: String
     val currentScrambledWord: String get() = _currentScrambledWord
 
 
@@ -40,36 +41,54 @@ class GameViewModel : ViewModel() {
     private var wordsList: MutableList<String> = mutableListOf()
 
 
-    fun nextScrambledWord() {
-        currentWord = allWordsList.random()
+    init {
+        nextWord()
+    }
 
-        var tempScrambledWord = currentWord.toCharArray()
+    companion object {
+        private const val LOG_TAG = "GameViewModel"
+    }
+
+    // Increase the word count and go to the next word
+    fun nextWord() {
+        _currentWordCount++
+        generateScrambledWord()
+    }
+
+    // Pick a new word and generate from it the corresponding scrambled word
+    private fun generateScrambledWord() {
+
+        // Generate the new current word, checking if it has already been used
+        do {
+            currentWord = allWordsList.random()
+        } while (wordsList.contains(currentWord))
+
+        // The currentWord that is going to be used is added in the list of already used words
+        wordsList.add(currentWord)
+
+        // Shuffle the current word until the shuffled one is different from the current word
+        val tempScrambledWord = currentWord.toCharArray()
         do {
             tempScrambledWord.shuffle()
-        } while (tempScrambledWord.toString().equals(currentWord, false))
+        } while (String(tempScrambledWord).equals(currentWord, false))
 
-        _currentScrambledWord = tempScrambledWord.toString()
+        // Assign the shuffled word to the current scrambled word to display
+        _currentScrambledWord = String(tempScrambledWord)
     }
 
-    fun isCurrentWordAvailable(): Boolean {
-        if (wordsList.contains(currentWord)) {
-            // The random word has already been used
-            return false
-        }
+    // Evaluate if the input word is equal to the current word. If so, increase the score
+    fun evaluateInputWord(input: String): Boolean {
+        val result = currentWord.equals(input, false)
+        if (result) { _score += SCORE_INCREASE }
 
-        wordsList.add(currentWord)
-        return true
+        return result
     }
 
-    fun updateWordsCount() {
-        _currentWordCount++
-    }
-
-    fun updateScore() {
-        _score += SCORE_INCREASE
-    }
-
-    private fun evaluateInputWord(input: String): Boolean {
-        return currentWord.equals(input, false)
+    // Re-initialize all the backing properties of the viewModel object
+    fun reinitializeData() {
+        _score = 0
+        _currentWordCount = 0
+        wordsList.clear()
+        nextWord()
     }
 }
