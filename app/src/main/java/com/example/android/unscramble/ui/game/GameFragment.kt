@@ -39,7 +39,8 @@ class GameFragment : Fragment() {
     private val viewModel: GameViewModel by viewModels()
 
     // Binding object instance with access to the views in the game_fragment.xml layout
-    private lateinit var binding: GameFragmentBinding
+    private var _binding: GameFragmentBinding? = null
+    private val binding get() = _binding!!
 
 
     override fun onCreateView(
@@ -47,7 +48,7 @@ class GameFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View {
         // Inflate the layout XML file and return a binding object instance
-        binding = GameFragmentBinding.inflate(inflater, container, false)
+        _binding = GameFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,6 +61,11 @@ class GameFragment : Fragment() {
         binding.skip.setOnClickListener { onSkipWord() }
         // Update the UI
         updateScreen()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 
