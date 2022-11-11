@@ -38,13 +38,13 @@ class GameViewModel : ViewModel() {
      */
 
     // Observable LiveData variables
-    private val _score = MutableLiveData<Int>(0)
+    private val _score: MutableLiveData<Int> = MutableLiveData(0)
     val score: LiveData<Int> get() = _score
 
-    private val _currentWordCount = MutableLiveData<Int>(0)
+    private val _currentWordCount: MutableLiveData<Int> = MutableLiveData(0)
     val currentWordCount: LiveData<Int> get() = _currentWordCount
 
-    private val _currentScrambledWord = MutableLiveData<String>()
+    private val _currentScrambledWord: MutableLiveData<String> = MutableLiveData()
     val currentScrambledWord: LiveData<String> get() = _currentScrambledWord
 
 
@@ -63,8 +63,11 @@ class GameViewModel : ViewModel() {
 
     // Increase the word count and go to the next word
     fun nextWord() {
-        (_currentWordCount.value)?.inc()
+        _currentWordCount.value = (_currentWordCount.value)?.inc()
+        Log.d(LOG_TAG, "CURRENT WORD COUNT: ${_currentWordCount.value}")
         generateScrambledWord()
+        Log.d(LOG_TAG, "CURRENT WORD: $currentWord")
+        Log.d(LOG_TAG, "CURRENT SCRAMBLED WORD: ${_currentScrambledWord.value}")
     }
 
     // Pick a new word and generate from it the corresponding scrambled word
@@ -91,7 +94,7 @@ class GameViewModel : ViewModel() {
     // Evaluate if the input word is equal to the current word. If so, increase the score
     fun evaluateInputWord(input: String): Boolean {
         val result = currentWord.equals(input, false)
-        if (result) { (_score.value)?.plus(SCORE_INCREASE) }
+        if (result) { _score.value = (_score.value)?.plus(SCORE_INCREASE) }
 
         return result
     }
