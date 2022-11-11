@@ -43,10 +43,6 @@ class GameFragment : Fragment() {
     // Binding object instance with access to the views in the game_fragment.xml layout
     private lateinit var binding: GameFragmentBinding
 
-    companion object {
-        private const val LOG_TAG = "GameFragment"
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,9 +62,6 @@ class GameFragment : Fragment() {
         binding.gameViewModel = viewModel
         binding.maxNoOfWords = MAX_NO_OF_WORDS
         binding.lifecycleOwner = viewLifecycleOwner
-
-        Log.d(LOG_TAG, "UI WORD COUNT: ${viewModel.currentWordCount.value}")
-        Log.d(LOG_TAG, "UI SCRAMBLED WORD: ${viewModel.currentScrambledWord.value}")
 
         // Setup a click listener for the Submit and Skip buttons.
         binding.submit.setOnClickListener { onSubmitWord() }

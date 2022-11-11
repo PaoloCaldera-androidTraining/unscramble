@@ -57,17 +57,10 @@ class GameViewModel : ViewModel() {
         nextWord()
     }
 
-    companion object {
-        private const val LOG_TAG = "GameViewModel"
-    }
-
     // Increase the word count and go to the next word
     fun nextWord() {
         _currentWordCount.value = (_currentWordCount.value)?.inc()
-        Log.d(LOG_TAG, "CURRENT WORD COUNT: ${_currentWordCount.value}")
         generateScrambledWord()
-        Log.d(LOG_TAG, "CURRENT WORD: $currentWord")
-        Log.d(LOG_TAG, "CURRENT SCRAMBLED WORD: ${_currentScrambledWord.value}")
     }
 
     // Pick a new word and generate from it the corresponding scrambled word
@@ -94,7 +87,9 @@ class GameViewModel : ViewModel() {
     // Evaluate if the input word is equal to the current word. If so, increase the score
     fun evaluateInputWord(input: String): Boolean {
         val result = currentWord.equals(input, false)
-        if (result) { _score.value = (_score.value)?.plus(SCORE_INCREASE) }
+        if (result) {
+            _score.value = (_score.value)?.plus(SCORE_INCREASE)
+        }
 
         return result
     }
