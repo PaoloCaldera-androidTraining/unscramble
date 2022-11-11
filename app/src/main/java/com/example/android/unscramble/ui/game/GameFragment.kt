@@ -61,6 +61,17 @@ class GameFragment : Fragment() {
         binding.skip.setOnClickListener { onSkipWord() }
         // Update the UI
         updateScreen()
+
+        // LiveData observers: the update occurs only when the state is STARTED or RESUMED
+        viewModel.currentWordCount.observe(viewLifecycleOwner) {
+            binding.wordCount.text = getString(R.string.word_count, it, MAX_NO_OF_WORDS)
+        }
+        viewModel.score.observe(viewLifecycleOwner) {
+            binding.score.text = getString(R.string.score, it)
+        }
+        viewModel.currentScrambledWord.observe(viewLifecycleOwner) {
+            binding.textViewUnscrambledWord.text = it
+        }
     }
 
     override fun onDestroyView() {
